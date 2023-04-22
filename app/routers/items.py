@@ -8,7 +8,6 @@ from app.dependencies import get_db, CommonsDep
 
 from ..schemas import Item
 
-# CommonQueryParams = Annotated[dict, Depends(common_parameters)]
 
 router = APIRouter(
     prefix="/items",
