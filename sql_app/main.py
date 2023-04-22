@@ -2,8 +2,21 @@ from fastapi import FastAPI, Query, Path, Body, HTTPException, Depends
 from pydantic import BaseModel, Field
 from enum import Enum
 from typing import Union, Annotated
+from sqlalchemy.orm import Session
+
+from . import crud, models, schemas
+from .database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 class Tags(str, Enum):
@@ -127,14 +140,25 @@ def update_item(
     return { "item_name": item.name, "item_id": item_id }
 
 
+@app.post("/users", tags=[Tags.user])
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return crud.create_user(db=db, user=user)
+
+
 @app.get("/uesrs/me", tags=[Tags.user])
 async def read_user_me():
     return { "user_id": "the current user" }
 
 
-@app.get("/users/{user_id}", tags=[Tags.user])
-async def read_user(user_id: str):
-    return { "user_id": user_id }
+@app.get("/users/{user_id}", tags=[Tags.user], response_model=schemas.User)
+def read_user(user_id: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db=db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return crud.get_user(db=db, user_id=user_id)
 
 
 class ModelName(str, Enum):
