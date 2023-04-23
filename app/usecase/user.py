@@ -2,12 +2,13 @@ from abc import ABC, abstractmethod
 
 from app.domain.user.user import UserModel
 from app.domain.user.user_repository import UserRepository
+from app.presentation.form.user import UserReadModel
 from app.schemas import UserCreate
 
 
 class UserUseCase(ABC):
     @abstractmethod
-    def get(self, user_id: int) -> UserModel:
+    def get(self, user_id: int) -> UserReadModel:
         raise NotImplementedError()
     
     def get_by_email(self, email: str) -> UserModel:
@@ -23,8 +24,8 @@ class UserUseCaseImpl(UserUseCase):
     def __init__(self, repository: UserRepository) -> None:
         self.repository = repository
 
-    def get(self, user_id: int) -> UserModel:
-        return self.repository.get_user(user_id)
+    def get(self, user_id: int) -> UserReadModel:
+        return self.__toResponse(self.repository.get_user(user_id))
     
 
     def get_by_email(self, email: str) -> UserModel:
@@ -33,3 +34,12 @@ class UserUseCaseImpl(UserUseCase):
 
     def register(self, user: UserCreate) -> UserModel:
         return self.repository.create_user(user=user)
+    
+
+    def __toResponse(self, user: UserModel) -> UserReadModel:
+        return UserReadModel(
+            id=user.id,
+            email=user.email,
+            is_active=user.is_active,
+        )
+

@@ -1,3 +1,4 @@
+from app.domain.user.user import UserModel
 from app.domain.user.user_repository import UserRepository
 from app.infrastructure.repository.base import BaseRepository
 
@@ -18,7 +19,15 @@ class UserRepositoryImpl(UserRepository, BaseRepository):
         return self.db.query(User).filter(User.email == email).first()
 
         
-    def get_user(self, user_id: int):
-        return self.db.query(User).filter(User.id == user_id).first()
+    def get_user(self, user_id: int) -> UserModel:
+        db_user = self.db.query(User).filter(User.id == user_id).first()
+        return self.__to_model(user=db_user)
 
-# TODO model変換
+
+    def __to_model(self, user: User) -> UserModel:
+        return UserModel(
+            id=user.id,
+            email=user.email,
+            is_active=user.is_active,
+        )
+

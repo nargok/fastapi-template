@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from enum import Enum
 
 from .infrastructure.database.config import engine, Base
-from .routers import users, items
+from app.presentation.routers import users, items
 
 Base.metadata.create_all(bind=engine)
 

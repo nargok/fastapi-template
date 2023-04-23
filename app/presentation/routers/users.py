@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.dependency.usecase import user_usecase
 
-from app.domain.user.user_repository import UserRepository
+from app.presentation.form.user import UserReadModel
 from app.usecase.user import UserUseCase
 
 
-from .. import schemas 
+from app.schemas import UserCreate 
 from app.dependency.repository import user_repository
 
 router = APIRouter(
@@ -16,7 +16,7 @@ router = APIRouter(
 
 @router.post("/")
 def create_user(
-    user: schemas.UserCreate,
+    user: UserCreate,
     useCase: UserUseCase = Depends(user_usecase)
 ):
     db_user = useCase.get_by_email(email=user.email)
@@ -30,12 +30,12 @@ async def read_user_me():
     return { "user_id": "the current user" }
 
 
-@router.get("/{user_id}", response_model=schemas.User)
+@router.get("/{user_id}", response_model=UserReadModel)
 def read_user(
     user_id: str,
     useCase: UserUseCase = Depends(user_usecase)
 ):
-    db_user = useCase.get(user_id=user_id)
-    if db_user is None:
+    user = useCase.get(user_id=user_id)
+    if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+    return user

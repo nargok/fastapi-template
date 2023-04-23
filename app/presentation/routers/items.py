@@ -6,7 +6,7 @@ from app.infrastructure.item.item_repository import ItemRepository
 from app.dependency.repository import get_repository
 from app.dependency.request import CommonsDep
 
-from ..schemas import Item
+from app.schemas import Item
 
 
 router = APIRouter(
