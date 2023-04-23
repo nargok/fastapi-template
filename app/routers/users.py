@@ -5,7 +5,7 @@ from app.domain.user.user_repository import UserRepository
 
 
 from .. import schemas 
-from app.dependencies import get_repository, user_repository
+from app.dependency.repository import user_repository
 
 router = APIRouter(
     prefix='/users',

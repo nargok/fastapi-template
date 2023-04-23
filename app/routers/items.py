@@ -1,10 +1,10 @@
 
 from typing import Annotated, Union
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query
-from sqlalchemy.orm import Session
 
 from app.infrastructure.item.item_repository import ItemRepository
-from app.dependencies import CommonsDep, get_repository
+from app.dependency.repository import get_repository
+from app.dependency.request import CommonsDep
 
 from ..schemas import Item
 
