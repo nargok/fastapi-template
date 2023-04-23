@@ -5,7 +5,7 @@ from app.domain.user.user import UserModel
 from app.schemas import UserCreate
 
 
-class UserReposigoty(ABC):
+class UserRepository(ABC):
     @abstractmethod
     def create_user(self, user: UserCreate) -> UserModel:
         raise NotImplementedError
@@ -16,5 +16,6 @@ class UserReposigoty(ABC):
         raise NotImplementedError
     
 
+    @abstractmethod
     def get_user(self, user_id: int) -> UserModel | None:
         raise NotImplementedError

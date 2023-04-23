@@ -1,9 +1,10 @@
+from app.domain.user.user_repository import UserRepository
 from app.infrastructure.repository.base import BaseRepository
 
 from app.schemas import UserCreate
 from app.infrastructure.user.user_dto import User
 
-class UserRepository(BaseRepository):
+class UserRepositoryImpl(BaseRepository, UserRepository):
     def create_user(self, *,  user: UserCreate):
         fakse_hashed_password = user.password + "notreallyhashed"
         db_user = User(email=user.email, hashed_password=fakse_hashed_password)

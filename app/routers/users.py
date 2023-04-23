@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.infrastructure.user.user_repository import UserRepository
+from app.domain.user.user_repository import UserRepository
+
 
 from .. import schemas, crud
-from app.dependencies import get_repository
+from app.dependencies import get_repository, user_repository
 
 router = APIRouter(
     prefix='/users',
@@ -14,7 +15,7 @@ router = APIRouter(
 @router.post("/")
 def create_user(
     user: schemas.UserCreate,
-    repository: UserRepository = Depends(get_repository(UserRepository))
+    repository: UserRepository = Depends(user_repository)
 ):
     db_user = repository.get_user_by_email(email=user.email)
     if db_user:
@@ -30,7 +31,7 @@ async def read_user_me():
 @router.get("/{user_id}", response_model=schemas.User)
 def read_user(
     user_id: str,
-    repository: UserRepository = Depends(get_repository(UserRepository))
+    repository: UserRepository = Depends(user_repository)
 ):
     db_user = repository.get_user(user_id=user_id)
     if db_user is None:
