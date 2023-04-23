@@ -2,11 +2,11 @@ from app.domain.user.user import UserModel
 from app.domain.user.user_repository import UserRepository
 from app.infrastructure.repository.base import BaseRepository
 
-from app.schemas import UserCreate
 from app.infrastructure.user.user_dto import User
+from app.presentation.form.user import UserCreateModel
 
 class UserRepositoryImpl(UserRepository, BaseRepository):
-    def create_user(self, *,  user: UserCreate):
+    def create_user(self, *,  user: UserCreateModel):
         fakse_hashed_password = user.password + "notreallyhashed"
         db_user = User(email=user.email, hashed_password=fakse_hashed_password)
         self.db.add(db_user)

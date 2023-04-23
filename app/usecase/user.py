@@ -2,8 +2,7 @@ from abc import ABC, abstractmethod
 
 from app.domain.user.user import UserModel
 from app.domain.user.user_repository import UserRepository
-from app.presentation.form.user import UserReadModel
-from app.schemas import UserCreate
+from app.presentation.form.user import UserCreateModel, UserReadModel
 
 
 class UserUseCase(ABC):
@@ -32,7 +31,7 @@ class UserUseCaseImpl(UserUseCase):
         return self.repository.get_user_by_email(email=email)
     
 
-    def register(self, user: UserCreate) -> UserModel:
+    def register(self, user: UserCreateModel) -> UserModel:
         return self.repository.create_user(user=user)
     
 

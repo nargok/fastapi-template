@@ -1,13 +1,13 @@
 
 from abc import ABC, abstractmethod
 from app.domain.user.user import UserModel
+from app.presentation.form.user import UserCreateModel
 
-from app.schemas import UserCreate
 
 
 class UserRepository(ABC):
     @abstractmethod
-    def create_user(self, user: UserCreate) -> UserModel:
+    def create_user(self, user: UserCreateModel) -> UserModel:
         raise NotImplementedError
     
 

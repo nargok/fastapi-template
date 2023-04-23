@@ -2,11 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.dependency.usecase import user_usecase
 
-from app.presentation.form.user import UserReadModel
+from app.presentation.form.user import UserCreateModel, UserReadModel
 from app.usecase.user import UserUseCase
 
 
-from app.schemas import UserCreate 
 from app.dependency.repository import user_repository
 
 router = APIRouter(
@@ -16,7 +15,7 @@ router = APIRouter(
 
 @router.post("/")
 def create_user(
-    user: UserCreate,
+    user: UserCreateModel,
     useCase: UserUseCase = Depends(user_usecase)
 ):
     db_user = useCase.get_by_email(email=user.email)

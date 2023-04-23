@@ -6,7 +6,7 @@ from app.infrastructure.item.item_repository import ItemRepository
 from app.dependency.repository import get_repository
 from app.dependency.request import CommonsDep
 
-from app.schemas import Item
+from app.presentation.form.item import ItemCreateModel, ItemReadModel
 
 
 router = APIRouter(
@@ -35,14 +35,14 @@ def read_item(
 
 
 @router.post("/")
-async def create_item(item: Item) -> Item:
+async def create_item(item: ItemCreateModel) -> ItemReadModel:
     return item
 
 @router.put("/{item_id}")
 def update_item(
     item_id: int,
     item: Annotated[
-        Item,
+        ItemCreateModel,
         Body(
             examples={
                 "normal": {
