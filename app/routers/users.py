@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.domain.user.user_repository import UserRepository
 
 
-from .. import schemas, crud
+from .. import schemas 
 from app.dependencies import get_repository, user_repository
 
 router = APIRouter(
