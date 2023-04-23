@@ -3,7 +3,7 @@ from typing import Annotated, Type
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from app.database import SessionLocal
+from app.infrastructure.database.config import SessionLocal
 from app.infrastructure.repository.base import BaseRepository
 
 

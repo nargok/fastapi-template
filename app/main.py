@@ -1,12 +1,10 @@
 from fastapi import FastAPI
 from enum import Enum
-from sqlalchemy.orm import Session
 
-from . import models 
-from .database import SessionLocal, engine
+from .infrastructure.database.config import engine, Base
 from .routers import users, items
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 app.include_router(users.router)

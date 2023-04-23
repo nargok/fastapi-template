@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.infrastructure.repository.user import UserRepository
+from app.infrastructure.user.user_repository import UserRepository
 
 from .. import schemas, crud
 from app.dependencies import get_repository

@@ -3,8 +3,8 @@ from typing import Annotated, Union
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query
 from sqlalchemy.orm import Session
 
-from .. import schemas, crud
-from app.dependencies import get_db, CommonsDep
+from app.infrastructure.item.item_repository import ItemRepository
+from app.dependencies import CommonsDep, get_repository
 
 from ..schemas import Item
 
@@ -14,15 +14,15 @@ router = APIRouter(
     tags=["items"],
 )
 
-@router.get("/items/")
-async def list_item(commons: CommonsDep):
-    return [
-        Item(name="hoge", price=35.4 ),
-        Item(name="fuga", price=35.4 ),
-    ]
+@router.get("/")
+async def list_item(
+    commons: CommonsDep,
+    repository: ItemRepository = Depends(get_repository(ItemRepository))
+):
+    return repository.list_items(skip=commons.skip, limit=commons.limit)
 
 
-@router.get("/items/{item_id}")
+@router.get("/{item_id}")
 def read_item(
     item_id: Annotated[int, Path(title="The ID of the item to get")],
      q: Union[str, None] = Query(default=None, min_length=3, max_length=10)
@@ -34,11 +34,11 @@ def read_item(
     return { "item_id": item_id, "q": q}
 
 
-@router.post("/items")
+@router.post("/")
 async def create_item(item: Item) -> Item:
     return item
 
-@router.put("/items/{item_id}")
+@router.put("/{item_id}")
 def update_item(
     item_id: int,
     item: Annotated[

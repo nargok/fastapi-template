@@ -1,7 +1,7 @@
 from app.infrastructure.repository.base import BaseRepository
 
 from app.schemas import UserCreate
-from app.models import User
+from app.infrastructure.user.user_dto import User
 
 class UserRepository(BaseRepository):
     def create_user(self, *,  user: UserCreate):
