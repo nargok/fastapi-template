@@ -18,9 +18,9 @@ def create_user(
     user: UserCreateModel,
     useCase: UserUseCase = Depends(user_usecase)
 ):
-    db_user = useCase.get_by_email(email=user.email)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    # db_user = useCase.get_by_email(email=user.email)
+    # if db_user:
+    #     raise HTTPException(status_code=400, detail="Email already registered")
     return useCase.register(user=user)
 
 

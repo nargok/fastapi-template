@@ -28,11 +28,12 @@ class UserUseCaseImpl(UserUseCase):
     
 
     def get_by_email(self, email: str) -> UserModel:
-        return self.repository.get_user_by_email(email=email)
+        return self.__toResponse(self.repository.get_user_by_email(email=email))
     
 
     def register(self, user: UserCreateModel) -> UserModel:
-        return self.repository.create_user(user=user)
+        # return self.repository.create_user(user=user)
+        return self.repository.save(user=user)
     
 
     def __toResponse(self, user: UserModel) -> UserReadModel:
