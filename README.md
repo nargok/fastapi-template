@@ -1,8 +1,9 @@
-Fast API Tutorial
+Fast API Template
 ===
 
 ## How to run application
 ```
+poerty install
 poetry shell
 uvicorn main:app --reload
 ```
